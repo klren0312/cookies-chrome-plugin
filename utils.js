@@ -31,11 +31,20 @@ function copyCookies(info, tab) {
   document.body.removeChild(input);
 }
 
+function copyUA () {
+  const input = document.createElement('input');
+  input.style.position = 'fixed';
+  input.style.opacity = 0;
+  input.value = navigator.userAgent;
+  document.body.appendChild(input);
+  input.select();
+  document.execCommand('Copy');
+  document.body.removeChild(input);
+}
+
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
     // https://zhuanlan.zhihu.com/p/57820028
-
-    // console.log('receive', sender, request)
     sendResponse(request.target);
   }
 );
@@ -50,4 +59,11 @@ var copyCookie = chrome.contextMenus.create({
   "parentId": parent,
   "contexts": ["page"],
   "onclick": copyCookies
+});
+
+var copyUA = chrome.contextMenus.create({
+  "title": "提取UserAgent至剪切板",
+  "parentId": parent,
+  "contexts": ["page"],
+  "onclick": copyUA
 });

@@ -4,6 +4,7 @@
 		div.id = 'cookie-block'
 		div.style.display = 'none'
 		document.body.appendChild(div);
+		const ua = navigator.userAgent
 	})
 })();
 // content.js

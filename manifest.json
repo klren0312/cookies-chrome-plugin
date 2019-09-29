@@ -1,7 +1,7 @@
 {
-  "name": "Cookie获取",
-  "description": "辅助抓取网站登陆后有效Cookies",
-  "version": "0.0.2",
+  "name": "Cookie与UserAgent获取",
+  "description": "辅助抓取网站登陆后有效Cookies和UserAgent",
+  "version": "0.0.3",
   "permissions": [
     "contextMenus",
     "tabs",
@@ -30,7 +30,7 @@
   }],
   "browser_action": {
     "default_icon": "icon-16.png",
-    "default_title": "Cookie获取",
+    "default_title": "Cookie与UserAgent获取",
     "default_popup": "popup.html"
   },
   "manifest_version": 2
