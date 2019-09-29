@@ -1,37 +1,29 @@
-let cookies = ''
-let url = ''
-
-/**
- * 文档加载完毕
- * 获取当前激活tab
- */
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-  if (changeInfo.status == 'complete') {
-
-    if (!chrome.cookies) {
-      chrome.cookies = chrome.experimental.cookies;
-    }
-    chrome.cookies.getAll({
-      url: tab.url
-    }, function (cookie) {
-      cookie.forEach(v => {
-        cookies += v.name + "=" + v.value + ";"
-      })
-    })
-  }
-})
-
+// 将当前页面的cookies复制到剪切板
 function copyCookies(info, tab) {
-  const input = document.createElement('input')
-  input.style.position = 'fixed'
-  input.style.opacity = 0
-  input.value = cookies
-  document.body.appendChild(input)
-  input.select()
-  document.execCommand('Copy')
-  document.body.removeChild(input)
+  let cookies = ''
+  chrome.cookies.getAll({
+    url: tab.url
+  }, function (cookie) {
+    // 遍历当前域名下cookie, 拼接成字符串
+    cookie.forEach(v => {
+      cookies += v.name + "=" + v.value + ";"
+    })
+    // 添加到剪切板
+    const input = document.createElement('input')
+    input.style.position = 'fixed'
+    input.style.opacity = 0
+    input.value = cookies
+    document.body.appendChild(input)
+    input.select()
+    document.execCommand('Copy')
+    document.body.removeChild(input)
+    chrome.tabs.sendMessage(tab.id, {cookies: cookies}, function(response) {
+      console.log(response)
+    });
+  })
 }
 
+// 将当前页面的UA复制到剪切板
 function copyUA () {
   const input = document.createElement('input')
   input.style.position = 'fixed'
@@ -46,10 +38,20 @@ function copyUA () {
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
     // https://zhuanlan.zhihu.com/p/57820028
-    sendResponse(request.target)
+    if (request !== 'ok') {
+      let cookies = ''
+      chrome.cookies.getAll({
+        url: request.target
+      }, function (cookie) {
+        // 遍历当前域名下cookie, 拼接成字符串
+        cookie.forEach(v => {
+          cookies += v.name + "=" + v.value + ";"
+        })
+        sendResponse(cookies)
+      })
+    }
   }
 )
-
 
 var parent = chrome.contextMenus.create({
   "title": "Cookie与UserAgent获取",

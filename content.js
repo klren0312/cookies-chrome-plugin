@@ -4,8 +4,15 @@
 		div.id = 'cookie-block'
 		div.style.display = 'none'
 		document.body.appendChild(div);
-		const ua = navigator.userAgent
 	})
+	chrome.runtime.onMessage.addListener(
+		function (request, sender, sendResponse) {
+			if (request !== 'ok') {
+				document.getElementById('cookie-block').innerText = request.cookies
+				sendResponse('ok')
+			}
+		}
+	)
 })();
 // content.js
 window.addEventListener('message', event => {
@@ -13,10 +20,6 @@ window.addEventListener('message', event => {
 		return
 	}
 	if (event.data && event.data.hasOwnProperty('type') && event.data.type === 'cookie') {
-		console.log('页面数据', event.data.type)
-		chrome.runtime.sendMessage(event.data, function(response) {
-			console.log(response)
-		})
+		console.log('页面数据', event.data)
 	}
-
 }, false)
