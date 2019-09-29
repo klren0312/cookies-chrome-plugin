@@ -19,7 +19,10 @@ window.addEventListener('message', event => {
 	if (event.source !== window) {
 		return
 	}
-	if (event.data && event.data.hasOwnProperty('type') && event.data.type === 'cookie') {
-		console.log('页面数据', event.data)
+	// 如果是主页面发送message, 则与background通信, 获取页面的 tabId
+	if (event.data && event.data.hasOwnProperty('type') && event.data.type === 'tab' && event.data.hasOwnProperty('level') && event.data.level === 'main') {
+		chrome.runtime.sendMessage({type: 'tab', level: 'main'}, function(response) {
+      console.log('收到响应', response)
+    })
 	}
 }, false)

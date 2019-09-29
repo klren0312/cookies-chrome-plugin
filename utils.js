@@ -1,3 +1,4 @@
+let mainPageId = null
 // 将当前页面的cookies复制到剪切板
 function copyCookies(info, tab) {
   let cookies = ''
@@ -17,9 +18,11 @@ function copyCookies(info, tab) {
     input.select()
     document.execCommand('Copy')
     document.body.removeChild(input)
-    chrome.tabs.sendMessage(tab.id, {cookies: cookies}, function(response) {
+    // 如果存在主页面的 tabId, 则将当前页的cookies发送给主页面
+    let sendId = mainPageId ? mainPageId : tab.id
+    chrome.tabs.sendMessage(sendId, {cookies: cookies}, function(response) {
       console.log(response)
-    });
+    })
   })
 }
 
@@ -35,20 +38,27 @@ function copyUA () {
   document.body.removeChild(input)
 }
 
-chrome.runtime.onMessage.addListener(
-  function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // https://zhuanlan.zhihu.com/p/57820028
     if (request !== 'ok') {
-      let cookies = ''
-      chrome.cookies.getAll({
-        url: request.target
-      }, function (cookie) {
-        // 遍历当前域名下cookie, 拼接成字符串
-        cookie.forEach(v => {
-          cookies += v.name + "=" + v.value + ";"
+      if (request.type === 'tab') {
+        if (request.level === 'main') { // 如果页面是主页面, 则将其 tabId 缓存, 并发送给主页面
+          mainPageId = sender.tab.id
+          sendResponse({type: 'tab', level: 'main', tabId: sender.tab.id})
+        }
+      } else if (request.type === 'cookies') {
+        let cookies = ''
+        chrome.cookies.getAll({
+          url: request.target
+        }, function (cookie) {
+          // 遍历当前域名下cookie, 拼接成字符串
+          cookie.forEach(v => {
+            cookies += v.name + "=" + v.value + ";"
+          })
+          sendResponse({type: 'cookies', cookies: cookies})
         })
-        sendResponse(cookies)
-      })
+      }
+
     }
   }
 )
