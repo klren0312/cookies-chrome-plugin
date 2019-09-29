@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <button onclick="getOtherPageCookies()">获取另一个页面cookies</button>
+  <script>
+    window.onload = function () {
+      const cookiesBlock = document.getElementById('cookie-block')
+      if (!cookiesBlock) return
+      const config = {
+        attributes: true,
+        childList: true,
+        subtree: true
+      }
+      const callback = function(mutationsList, observer) {
+        for (let mutation of mutationsList) {
+          if (mutation.type === 'childList') {
+            console.log(JSON.parse(cookiesBlock.innerText))
+          }
+        }
+      }
+      const observer = new MutationObserver(callback)
+      observer.observe(cookiesBlock, config)
+    }
+    function getOtherPageCookies () {
+      window.parent.postMessage({type: 'tab', level: 'main'}, '*');
+      setTimeout(() => {
+        window.open('https://www.baidu.com', 'DescriptiveWindowName', 'resizable,scrollbars')
+      }, 800)
+    }
+  </script>
+</body>
+</html>

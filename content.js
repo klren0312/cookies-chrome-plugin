@@ -8,7 +8,7 @@
 	chrome.runtime.onMessage.addListener(
 		function (request, sender, sendResponse) {
 			if (request !== 'ok') {
-				document.getElementById('cookie-block').innerText = request.cookies
+				document.getElementById('cookie-block').innerText = JSON.stringify(request)
 				sendResponse('ok')
 			}
 		}
