@@ -1,4 +1,5 @@
 let mainPageId = null
+
 // 将当前页面的cookies复制到剪切板
 function copyCookies(info, tab) {
   let cookies = ''
@@ -53,7 +54,11 @@ function sendCookieAndUA (info, tab) {
       console.log(response)
     })
   })
+}
 
+// 给popup使用的方法
+function popupMethod () {
+  return mainPageId
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
