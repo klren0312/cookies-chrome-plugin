@@ -1,0 +1,38 @@
+{
+  "name": "Cookie获取",
+  "description": "辅助抓取网站登陆后有效Cookies",
+  "version": "0.0.2",
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "storage",
+    "webNavigation",
+    "notifications",
+    "activeTab",
+    "cookies",
+    "<all_urls>"
+  ],
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
+  "background": {
+    "scripts": [
+      "jquery.min.js",
+      "utils.js"
+    ]
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"],
+    "run_at": "document_start"
+  }],
+  "browser_action": {
+    "default_icon": "icon-16.png",
+    "default_title": "Cookie获取",
+    "default_popup": "popup.html"
+  },
+  "manifest_version": 2
+}
+
