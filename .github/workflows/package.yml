@@ -21,5 +21,14 @@ jobs:
       run: |
         npm install
         node package.js
+        apt-get update
+        apt-get install -y git
+        git init
+        git config --global user.email ${GITHUB_EVENT_PATH}
+        git config --global user.username ${GITHUB_EVENT_PATH}
+        git remote add https://${ACCESS_TOKEN:-"x-access-token:$GITHUB_TOKEN"}@github.com/${GITHUB_REPOSITORY}.git
+        git add .
+        git commit -m "refactor: generate crx file"
+        git push origin master
       env:
         CI: true
