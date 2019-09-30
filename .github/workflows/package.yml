@@ -23,8 +23,6 @@ jobs:
       run: node package.js
     - name: push the crx file
       run: |
-        git config --global user.email "kuanglong0312@sina.com"
-        git config --global user.username "klkl"
         git add .
         git commit -m "refactor: generate crx file"
         git push origin master
