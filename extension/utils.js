@@ -57,8 +57,13 @@ function sendCookieAndUA (info, tab) {
 }
 
 // 给popup使用的方法
-function popupMethod () {
+// 获取页面ID
+function popupGetTabId () {
   return mainPageId
+}
+// 清除页面ID
+function popupCleanTabId () {
+  mainPageId = null
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

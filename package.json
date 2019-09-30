@@ -1,0 +1,11 @@
+{
+  "name": "crxpackage",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:klren0312/cookies-chrome-plugin.git",
+  "author": "ren <kuanglong0312@sina.com>",
+  "license": "MIT",
+  "dependencies": {
+    "crx": "^5.0.1"
+  }
+}
