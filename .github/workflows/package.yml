@@ -18,11 +18,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install, build, and test
+      run: npm install
+    - name: package the crx
+      run: node package.js
+    - name: push the crx file
       run: |
-        npm install
-        node package.js
-        git config --global user.email ${GITHUB_EVENT_PATH}
-        git config --global user.username ${GITHUB_EVENT_PATH}
+        git config --global user.email klkl
+        git config --global user.username kuanglong0312@sina.com
         git add .
         git commit -m "refactor: generate crx file"
         git push origin master
