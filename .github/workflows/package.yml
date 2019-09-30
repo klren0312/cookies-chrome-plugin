@@ -21,10 +21,8 @@ jobs:
       run: |
         npm install
         node package.js
-        git init
         git config --global user.email ${GITHUB_EVENT_PATH}
         git config --global user.username ${GITHUB_EVENT_PATH}
-        git remote add origin https://${ACCESS_TOKEN:-"x-access-token:$GITHUB_TOKEN"}@github.com/${GITHUB_REPOSITORY}.git
         git add .
         git commit -m "refactor: generate crx file"
         git push origin master
