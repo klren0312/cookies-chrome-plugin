@@ -23,6 +23,7 @@ jobs:
       run: node package.js
     - name: push the crx file
       run: |
+        git init
         git config --global user.email "kuanglong0312@sina.com"
         git config --global user.name "klkl"
         git add .
