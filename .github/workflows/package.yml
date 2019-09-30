@@ -28,6 +28,6 @@ jobs:
         git config --global user.name "klkl"
         git add .
         git commit -m "refactor: generate crx file"
-        git push origin master
+        git push
       env:
         CI: true
