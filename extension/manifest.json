@@ -7,10 +7,6 @@
   "permissions": [
     "contextMenus",
     "tabs",
-    "storage",
-    "webNavigation",
-    "notifications",
-    "activeTab",
     "cookies",
     "<all_urls>"
   ],
