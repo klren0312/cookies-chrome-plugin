@@ -22,6 +22,12 @@ const copyCookieByJSONMenu = chrome.contextMenus.create({
   "contexts": ["page"],
   "onclick": copyCookiesByJSON
 })
+const copyCookieByPTMenu = chrome.contextMenus.create({
+  "title": "ptkey&&ptpin",
+  "parentId": copyCookieMenu,
+  "contexts": ["page"],
+  "onclick": copyCookiesByPT
+})
 
 const copyUAMenu = chrome.contextMenus.create({
   "title": "提取UserAgent至剪切板",
