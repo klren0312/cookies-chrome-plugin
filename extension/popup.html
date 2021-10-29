@@ -6,6 +6,7 @@
   <title>Cookie与UserAgent获取</title>
   <style type="text/css">
     body {
+      max-width: 500px;
       margin: 10px;
       white-space: nowrap;
     }
@@ -13,28 +14,31 @@
     h1 {
       font-size: 15px;
     }
-
-    .container {
-      align-items: center;
-      display: flex;
-      justify-content: space-between;
+    .margin-bottom-10 {
+      margin-bottom: 10px;
     }
-    .clean-btn {
-      margin-left: 20px;
-      padding: 5px 10px;
-      color: #fff;
-      border: 0;
-      background: #00AEF0;
+    .cookies-block {
+      width: 100%;
+      padding: 10px;
+      max-height: 300px;
+      overflow: auto;
+      border: 1px solid #dfdfdf;
     }
-    .clean-btn:hover {
-      background: rgb(27, 177, 236);
+    .user-agent {
+      overflow: auto;
     }
   </style>
 </head>
 
 <body>
-  <h1>Cookie与UserAgent获取</h1>
-  <div>当前主页面ID: <span id="current-main"></span></div>
+  <div class="margin-bottom-10"><strong>当前主页面ID:</strong><span id="current-main"></span></div>
+  <div><strong>Cookies:</strong></div>
+  <table border="1" class="cookies-block margin-bottom-10" id="js-cookies-list">
+  </table>
+  <div class="user-agent margin-bottom-10">
+    <strong>UserAgent:</strong>
+    <span id="js-user-agent"></span>
+  </div>
   <script src="popup.js"></script>
 </body>
 
