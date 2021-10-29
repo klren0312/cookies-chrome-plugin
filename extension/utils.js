@@ -42,7 +42,7 @@ function copyCookiesByOrigin(info, tab) {
   let cookies = ''
   chrome.cookies.getAll({
     url: tab.url
-  }, function (cookie) {
+  }, cookie => {
     // 遍历当前域名下cookie, 拼接成字符串
     cookie.forEach(v => {
       cookies += v.name + "=" + v.value + ";"
@@ -63,7 +63,7 @@ function copyCookiesByJSON(info, tab) {
   let cookies = {}
   chrome.cookies.getAll({
     url: tab.url
-  }, function (cookie) {
+  }, cookie => {
     // 遍历当前域名下cookie, 组成json
     cookie.forEach(v => {
       cookies[v.name]  = v.value
@@ -73,6 +73,29 @@ function copyCookiesByJSON(info, tab) {
     input.style.position = 'fixed'
     input.style.opacity = 0
     input.value = JSON.stringify(cookies)
+    document.body.appendChild(input)
+    input.select()
+    document.execCommand('Copy')
+    document.body.removeChild(input)
+  })
+}
+
+function copyCookiesByPT(info, tab) {
+  chrome.cookies.getAll({
+    url: tab.url
+  }, cookie => {
+    // 遍历当前域名下cookie, 组成json
+    let arr = []
+    cookie.forEach(v => {
+      if (v.name === 'pt_key' || v.name === 'pt_pin') {
+        arr.push(v.name + '=' + v.value)
+      }
+    })
+    // 添加到剪切板
+    const input = document.createElement('input')
+    input.style.position = 'fixed'
+    input.style.opacity = 0
+    input.value = JSON.stringify(arr.join(';'))
     document.body.appendChild(input)
     input.select()
     document.execCommand('Copy')
@@ -99,7 +122,7 @@ function sendCookieAndUA (info, tab) {
   const ua = navigator.userAgent
   chrome.cookies.getAll({
     url: tab.url
-  }, function (cookie) {
+  }, cookie => {
     // 遍历当前域名下cookie, 拼接成字符串
     cookie.forEach(v => {
       cookies += v.name + "=" + v.value + ";"
@@ -109,7 +132,7 @@ function sendCookieAndUA (info, tab) {
     chrome.tabs.sendMessage(sendId, {
       cookies: cookies,
       ua: ua
-    }, function(response) {
+    }, response => {
       console.log(response)
     })
   })
@@ -137,7 +160,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         let cookies = ''
         chrome.cookies.getAll({
           url: request.target
-        }, function (cookie) {
+        }, cookie => {
           // 遍历当前域名下cookie, 拼接成字符串
           cookie.forEach(v => {
             cookies += v.name + "=" + v.value + ";"
