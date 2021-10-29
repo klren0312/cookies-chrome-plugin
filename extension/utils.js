@@ -1,7 +1,44 @@
-let mainPageId = null
+const rootMenu = chrome.contextMenus.create({
+  "title": "Cookie与UserAgent获取",
+  "contexts": ["page"]
+})
+
+// cookie操作
+const copyCookieMenu = chrome.contextMenus.create({
+  "title": "提取Cookies至剪切板",
+  "parentId": rootMenu,
+  "contexts": ["page"]
+})
+// cookie原始字符串
+const copyCookieByOriginMenu = chrome.contextMenus.create({
+  "title": "原始数据",
+  "parentId": copyCookieMenu,
+  "contexts": ["page"],
+  "onclick": copyCookiesByOrigin
+})
+const copyCookieByJSONMenu = chrome.contextMenus.create({
+  "title": "JSON",
+  "parentId": copyCookieMenu,
+  "contexts": ["page"],
+  "onclick": copyCookiesByJSON
+})
+
+const copyUAMenu = chrome.contextMenus.create({
+  "title": "提取UserAgent至剪切板",
+  "parentId": rootMenu,
+  "contexts": ["page"],
+  "onclick": copyUAFun
+})
+
+const sendCookieAndUAMenu = chrome.contextMenus.create({
+  "title": "发送Cookies和UA到主页面",
+  "parentId": rootMenu,
+  "contexts": ["page"],
+  "onclick": sendCookieAndUA
+})
 
 // 将当前页面的cookies复制到剪切板
-function copyCookies(info, tab) {
+function copyCookiesByOrigin(info, tab) {
   let cookies = ''
   chrome.cookies.getAll({
     url: tab.url
@@ -22,8 +59,29 @@ function copyCookies(info, tab) {
   })
 }
 
+function copyCookiesByJSON(info, tab) {
+  let cookies = {}
+  chrome.cookies.getAll({
+    url: tab.url
+  }, function (cookie) {
+    // 遍历当前域名下cookie, 组成json
+    cookie.forEach(v => {
+      cookies[v.name]  = v.value
+    })
+    // 添加到剪切板
+    const input = document.createElement('input')
+    input.style.position = 'fixed'
+    input.style.opacity = 0
+    input.value = JSON.stringify(cookies)
+    document.body.appendChild(input)
+    input.select()
+    document.execCommand('Copy')
+    document.body.removeChild(input)
+  })
+}
+
 // 将当前页面的UA复制到剪切板
-function copyUA () {
+function copyUAFun () {
   const input = document.createElement('input')
   input.style.position = 'fixed'
   input.style.opacity = 0
@@ -35,6 +93,7 @@ function copyUA () {
 }
 
 // 发送Cookies和UA到主页面
+let mainPageId = null
 function sendCookieAndUA (info, tab) {
   let cookies = ''
   const ua = navigator.userAgent
@@ -90,28 +149,3 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
   }
 )
-
-var parent = chrome.contextMenus.create({
-  "title": "Cookie与UserAgent获取",
-  "contexts": ["page"]
-})
-var copyCookie = chrome.contextMenus.create({
-  "title": "提取Cookies至剪切板",
-  "parentId": parent,
-  "contexts": ["page"],
-  "onclick": copyCookies
-})
-
-var copyUA = chrome.contextMenus.create({
-  "title": "提取UserAgent至剪切板",
-  "parentId": parent,
-  "contexts": ["page"],
-  "onclick": copyUA
-})
-
-var sendCookieAndUA = chrome.contextMenus.create({
-  "title": "发送Cookies和UA到主页面",
-  "parentId": parent,
-  "contexts": ["page"],
-  "onclick": sendCookieAndUA
-})

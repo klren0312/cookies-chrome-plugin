@@ -1,16 +1,15 @@
-const bg = chrome.extension.getBackgroundPage()
 getTabId()
 
 function getTabId () {
-  const id = bg.popupGetTabId()
-  let urlId = id ? id : '暂无'
-  document.getElementById('current-main').innerText = urlId
+  chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+    document.getElementById('current-main').innerText = tabs.length ? tabs[0].id: '暂无'
+  })
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   var cleanBtn = document.querySelector('.clean-btn')
   cleanBtn.addEventListener('click', function() {
-    bg.popupCleanTabId()
+    document.getElementById('current-main').innerText = ''
     getTabId()
   })
 })
