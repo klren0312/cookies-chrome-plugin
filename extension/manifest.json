@@ -1,7 +1,7 @@
 {
   "name": "Cookie与UserAgent获取",
   "description": "辅助抓取网站登陆后有效Cookies和UserAgent",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "author": "ZZES",
   "homepage_url": "https://github.com/klren0312/cookies-chrome-plugin",
   "permissions": [
