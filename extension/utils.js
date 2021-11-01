@@ -101,7 +101,7 @@ function copyCookiesByPT(info, tab) {
     const input = document.createElement('input')
     input.style.position = 'fixed'
     input.style.opacity = 0
-    input.value = JSON.stringify(arr.join(';'))
+    input.value = arr.join(';')
     document.body.appendChild(input)
     input.select()
     document.execCommand('Copy')
