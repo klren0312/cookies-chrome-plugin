@@ -101,7 +101,11 @@ function copyCookiesByPT(info, tab) {
     const input = document.createElement('input')
     input.style.position = 'fixed'
     input.style.opacity = 0
-    input.value = arr.join(';')
+    if (arr.length > 0) {
+      input.value = arr.join(';') + ';'
+    } else {
+      input.value = ''
+    }
     document.body.appendChild(input)
     input.select()
     document.execCommand('Copy')
