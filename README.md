@@ -1,5 +1,6 @@
 ﻿# 浏览器插件获取Cookie与UserAgent
 > 火狐商店地址: https://addons.mozilla.org/zh-CN/firefox/addon/cookies%E4%B8%8Euseragent%E8%8E%B7%E5%8F%96/
+> EDGE商店地址: https://microsoftedge.microsoft.com/addons/detail/cookie%E4%B8%8Euseragent%E8%8E%B7%E5%8F%96/cnekpflpbekhhpcmaekfdnmoimfhllpc
 
 ## 打包插件
 ```bash
